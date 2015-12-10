@@ -6,18 +6,13 @@ var fs               = require('fs')
 var execSync         = require('child_process').execSync
 var config           = require('./webpack.config')
 
-// run the webpack dev server
-//  must generate the schema.json first as compiler relies on it for babel-relay-plugin
 gulp.task('webpack', function () {
   var compiler = webpack(config);
   var server = new WebpackDevServer(compiler, {
     contentBase: path.join(__dirname, 'build', 'public'),
     noInfo: true,
     stats: { colors: true },
-    historyApiFallback: true,
-    proxy: {
-      '/graphql': 'http://localhost:8080'
-    }
+    historyApiFallback: true
   })
   server.use(require('webpack-hot-middleware')(compiler))
   server.listen(3000, '0.0.0.0', function (err, result) {
